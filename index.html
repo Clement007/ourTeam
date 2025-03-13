@@ -1,0 +1,2013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FHI 360: Team Profiles & Recognition Board</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #00a5cf;
+            --secondary-color: #734ae8;
+            --accent-color: #ff8552;
+            --light-bg: #f8f9fa;
+            --dark-text: #2d3748;
+        }
+        
+        body {
+            background-color: #f0f4f8;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: var(--dark-text);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+        
+        .nav-link {
+            font-weight: 600;
+            color: var(--dark-text);
+        }
+        
+        .board-container {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 20px 0 40px;
+        }
+        
+        .header h1 {
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .kudo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .kudo-card {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-top: 5px solid;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .kudo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .kudo-color-1 { border-top-color: #00a5cf; }
+        .kudo-color-2 { border-top-color: #734ae8; }
+        .kudo-color-3 { border-top-color: #ff8552; }
+        .kudo-color-4 { border-top-color: #4CAF50; }
+        .kudo-color-5 { border-top-color: #F44336; }
+        
+        .profile-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .profile-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 2.5rem;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            overflow: hidden;
+        }
+        
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .profile-name {
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        
+        .profile-title {
+            font-weight: 500;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+        
+        .profile-body {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .profile-section {
+            margin-bottom: 20px;
+        }
+        
+        .profile-section-title {
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .profile-section-title i {
+            margin-right: 8px;
+        }
+        
+        .profile-skill {
+            display: inline-block;
+            background-color: #e9f7fb;
+            color: var(--primary-color);
+            padding: 5px 12px;
+            border-radius: 20px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .profile-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .profile-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        
+        .profile-icon:hover {
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .profile-footer {
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .card-header {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .card-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: var(--dark-text);
+            font-weight: bold;
+            font-size: 1.2rem;
+            overflow: hidden;
+        }
+        
+        .card-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .card-title {
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .card-subtitle {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .card-body {
+            flex-grow: 1;
+        }
+        
+        .card-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid #e9ecef;
+            margin-top: auto;
+        }
+        
+        .reaction-btn {
+            border: none;
+            background: none;
+            color: #6c757d;
+            display: flex;
+            align-items: center;
+            padding: 5px 10px;
+            border-radius: 20px;
+            transition: background-color 0.2s;
+        }
+        
+        .reaction-btn:hover {
+            background-color: #f8f9fa;
+            color: var(--primary-color);
+        }
+        
+        .reaction-btn i {
+            margin-right: 5px;
+        }
+        
+        .time-stamp {
+            color: #adb5bd;
+            font-size: 0.8rem;
+        }
+        
+        .form-container {
+            background-color: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            margin-bottom: 30px;
+        }
+        
+        .form-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .form-title i {
+            margin-right: 10px;
+            background-color: var(--primary-color);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: var(--dark-text);
+        }
+        
+        .form-control {
+            border-radius: 8px;
+            padding: 12px 15px;
+            border: 1px solid #ced4da;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(0, 165, 207, 0.25);
+        }
+        
+        .color-selector {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .color-option {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            margin-right: 12px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: transform 0.2s;
+        }
+        
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+        
+        .color-option.selected {
+            border-color: #333;
+        }
+        
+        .color-1 { background-color: #00a5cf; }
+        .color-2 { background-color: #734ae8; }
+        .color-3 { background-color: #ff8552; }
+        .color-4 { background-color: #4CAF50; }
+        .color-5 { background-color: #F44336; }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0, 165, 207, 0.3);
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background-color: #0090b3;
+            border-color: #0090b3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 165, 207, 0.4);
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-weight: 600;
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .tab-container {
+            margin-bottom: 30px;
+        }
+        
+        .nav-tabs {
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .nav-tabs .nav-item .nav-link {
+            border: none;
+            font-weight: 600;
+            color: #6c757d;
+            padding: 12px 20px;
+            margin-right: 5px;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .nav-tabs .nav-item .nav-link.active {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            background: none;
+        }
+        
+        .tab-content {
+            padding-top: 20px;
+        }
+        
+        .share-bar {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .share-text {
+            font-weight: 600;
+        }
+        
+        .share-link-container {
+            display: flex;
+            flex-grow: 1;
+            margin: 0 15px;
+            position: relative;
+        }
+        
+        .share-link {
+            width: 100%;
+            background-color: #f8f9fa;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            color: #6c757d;
+            cursor: text;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+        
+        .share-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .social-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--light-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark-text);
+            transition: all 0.3s;
+            border: none;
+        }
+        
+        .social-btn:hover {
+            transform: translateY(-2px);
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .export-btn {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .export-btn:hover {
+            background-color: #6238cc;
+            border-color: #6238cc;
+        }
+        
+        @media (max-width: 992px) {
+            .form-container {
+                margin-bottom: 30px;
+            }
+            
+            .share-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .share-text {
+                margin-bottom: 10px;
+            }
+            
+            .share-link-container {
+                width: 100%;
+                margin: 10px 0;
+            }
+            
+            .share-buttons {
+                width: 100%;
+                justify-content: flex-end;
+                margin-top: 10px;
+            }
+        }
+        
+        .emoji-picker {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .emoji-btn {
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .emoji-btn:hover {
+            transform: scale(1.2);
+            background-color: #f8f9fa;
+        }
+        
+        .emoji-btn.active {
+            background-color: #e9f7fb;
+        }
+        
+        /* For profile form */
+        .image-upload {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            border: 2px dashed #ced4da;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .image-upload:hover {
+            background-color: #e9ecef;
+        }
+        
+        .image-upload i {
+            font-size: 2rem;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+        
+        .image-upload span {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+        
+        .image-upload input {
+            display: none;
+        }
+        
+        .image-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        
+        .chip-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .skill-chip {
+            display: flex;
+            align-items: center;
+            background-color: #e9f7fb;
+            border-radius: 16px;
+            padding: 5px 10px 5px 15px;
+            font-size: 0.9rem;
+        }
+        
+        .remove-chip {
+            background: none;
+            border: none;
+            color: #6c757d;
+            margin-left: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            font-size: 0.8rem;
+        }
+        
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+        }
+        
+        .custom-toast {
+            min-width: 300px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            margin-bottom: 10px;
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity 0.3s, transform 0.3s;
+            overflow: hidden;
+        }
+        
+        .custom-toast.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .toast-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .toast-body {
+            padding: 12px 15px;
+        }
+        
+        .toast-success .toast-indicator {
+            background-color: var(--primary-color);
+        }
+        
+        .toast-indicator {
+            width: 4px;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        
+        .search-container {
+            position: relative;
+            max-width: 500px;
+            margin: 0 auto 30px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            padding-left: 45px;
+            border-radius: 100px;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            font-size: 1rem;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 30px;
+            color: #6c757d;
+        }
+        
+        .no-results i {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: #ced4da;
+        }
+    </style>
+</head>
+<body>
+    <!-- Toast container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="#">OurTeam</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Team Directory</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Recognition Board</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Share with Recruiters</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-primary ms-2" href="#">Sign In</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container py-5">
+        <div class="header">
+            <h1>FHI 360 - USAID TUNOZE GUSOMA EXCEPTIONAL TALENT POOL</h1>
+            <p>Schools and Systems Project</p>
+        </div>
+        
+        <div class="tab-container">
+            <ul class="nav nav-tabs" id="mainTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="profiles-tab" data-bs-toggle="tab" data-bs-target="#profiles-content" type="button" role="tab" aria-controls="profiles-content" aria-selected="true">Team Profiles</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="recognition-tab" data-bs-toggle="tab" data-bs-target="#recognition-content" type="button" role="tab" aria-controls="recognition-content" aria-selected="false">Recognition Board</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="add-profile-tab" data-bs-toggle="tab" data-bs-target="#add-profile-content" type="button" role="tab" aria-controls="add-profile-content" aria-selected="false">Add Team Member</button>
+                </li>
+            </ul>
+            
+            <div class="tab-content" id="mainTabsContent">
+                <!-- Profiles Tab Content -->
+                <div class="tab-pane fade show active" id="profiles-content" role="tabpanel" aria-labelledby="profiles-tab">
+                    <div class="share-bar">
+                        <span class="share-text">Share team profiles with recruiters:</span>
+                        <div class="share-link-container">
+                            <input type="text" class="share-link" value="https://OurTeam.com/t/our-amazing-team-TG" readonly>
+                            <button class="copy-btn" id="copy-link"><i class="far fa-copy"></i></button>
+                        </div>
+                        <div class="share-buttons">
+                            <button class="social-btn" id="share-linkedin"><i class="fab fa-linkedin"></i></button>
+                            <button class="social-btn" id="share-email"><i class="fas fa-envelope"></i></button>
+                            <button class="btn btn-primary export-btn" id="export-pdf"><i class="fas fa-file-export me-2"></i>Export PDF</button>
+                        </div>
+                    </div>
+                    
+                    <div class="search-container">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" class="search-input" id="profile-search" placeholder="Search team members by name, title, or skills...">
+                    </div>
+                    
+                    <div class="profile-grid" id="profiles-container">
+                        <!-- Profile cards will be added here -->
+                    </div>
+                </div>
+                
+                <!-- Recognition Board Tab Content -->
+                <div class="tab-pane fade" id="recognition-content" role="tabpanel" aria-labelledby="recognition-tab">
+                    <div class="row">
+                        <!-- Sidebar with form -->
+                        <div class="col-lg-4">
+                            <div class="form-container">
+                                <h3 class="form-title"><i class="fas fa-award"></i> Add Recognition</h3>
+                                <form id="kudo-form">
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Your Name</label>
+                                        <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="recipient" class="form-label">Who are you recognizing?</label>
+                                        <input type="text" class="form-control" id="recipient" placeholder="Enter recipient's name" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="message" class="form-label">Your Message</label>
+                                        <textarea class="form-control" id="message" rows="4" placeholder="What would you like to say?" required></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Add an emoji</label>
+                                        <div class="emoji-picker">
+                                            <button type="button" class="emoji-btn" data-emoji="👏">👏</button>
+                                            <button type="button" class="emoji-btn" data-emoji="🎉">🎉</button>
+                                            <button type="button" class="emoji-btn" data-emoji="⭐">⭐</button>
+                                            <button type="button" class="emoji-btn" data-emoji="🙌">🙌</button>
+                                            <button type="button" class="emoji-btn" data-emoji="❤️">❤️</button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label">Card Color</label>
+                                        <div class="color-selector">
+                                            <div class="color-option color-1 selected" data-color="1"></div>
+                                            <div class="color-option color-2" data-color="2"></div>
+                                            <div class="color-option color-3" data-color="3"></div>
+                                            <div class="color-option color-4" data-color="4"></div>
+                                            <div class="color-option color-5" data-color="5"></div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <i class="fas fa-paper-plane me-2"></i>Post Recognition
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        
+                        <!-- Main board area -->
+                        <div class="col-lg-8">
+                            <div class="board-container">
+                                <div class="filters">
+                                    <button class="btn btn-outline-primary active" data-filter="all">All</button>
+                                    <button class="btn btn-outline-primary" data-filter="recent">Recent</button>
+                                    <button class="btn btn-outline-primary" data-filter="popular">Most Liked</button>
+                                </div>
+                                
+                                <div class="kudo-grid" id="kudo-container">
+                                    <!-- Kudo cards will be added here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Add Profile Tab Content -->
+                <div class="tab-pane fade" id="add-profile-content" role="tabpanel" aria-labelledby="add-profile-tab">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="form-container">
+                                <h3 class="form-title"><i class="fas fa-user-plus"></i> Add Team Member Profile</h3>
+                                <form id="profile-form">
+                                    <div class="text-center mb-4">
+                                        <label for="profile-image" class="image-upload" id="image-upload-container">
+                                            <i class="fas fa-camera" id="camera-icon"></i>
+                                            <span id="upload-text">Add Photo</span>
+                                            <input type="file" id="profile-image" accept="image/*">
+                                            <img id="image-preview" class="image-preview" style="display: none;">
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="profile-name" class="form-label">Full Name</label>
+                                            <input type="text" class="form-control" id="profile-name" placeholder="Enter full name" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="profile-title" class="form-label">Job Title</label>
+                                            <input type="text" class="form-control" id="profile-title" placeholder="Enter job title" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="profile-summary" class="form-label">Professional Summary</label>
+                                        <textarea class="form-control" id="profile-summary" rows="3" placeholder="Brief professional summary" required></textarea>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="profile-email" class="form-label">Email</label>
+                                            <input type="email" class="form-control" id="profile-email" placeholder="Enter email address">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="profile-linkedin" class="form-label">LinkedIn Profile</label>
+                                            <input type="url" class="form-control" id="profile-linkedin" placeholder="LinkedIn URL">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="profile-experience" class="form-label">Years of Experience</label>
+                                        <input type="number" class="form-control" id="profile-experience" min="0" max="50">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="profile-skills-input" class="form-label">Skills</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="profile-skills-input" placeholder="Add skills and press Enter">
+                                            <button class="btn btn-outline-secondary" type="button" id="add-skill-btn">Add</button>
+                                        </div>
+                                        <div class="chip-container" id="skills-container">
+                                            <!-- Skills will be added here -->
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <label for="profile-achievements" class="form-label">Key Achievements</label>
+                                        <textarea class="form-control" id="profile-achievements" rows="3" placeholder="List major achievements or contributions"></textarea>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <i class="fas fa-save me-2"></i>Save Profile
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.bundle.min.js"></script>
+    <!-- jsPDF for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize variables
+            let selectedEmoji = '';
+            let profileSkills = [];
+            let teamMembers = []; // Array to store all team members
+            let recognitions = []; // Array to store all recognitions
+            
+            // Sample team profiles (initial data)
+            const initialTeamMembers = [
+                {
+                    id: 1,
+                    name: "Edward Asai Ankrah",
+                    title: "Senior Frontend Developer",
+                    photoUrl: "/api/placeholder/100/100", // Placeholder image
+                    summary: "Experienced frontend developer with expertise in modern JavaScript frameworks and responsive design.",
+                    email: "alex.wong@example.com",
+                    linkedin: "https://linkedin.com/in/alexwong",
+                    experience: 7,
+                    skills: ["React", "TypeScript", "SCSS", "Redux", "Jest", "Performance Optimization"],
+                    achievements: "Led the redesign of the company's flagship product, improving user engagement by 40%."
+                },
+                {
+                    id: 2,
+                    name: "Intwali Deo",
+                    title: "UX/UI Designer",
+                    photoUrl: "/api/placeholder/100/100", // Placeholder image
+                    summary: "Creative designer with a focus on user-centered design principles and accessibility.",
+                    email: "sarah.johnson@example.com",
+                    linkedin: "https://linkedin.com/in/sarahjohnson",
+                    experience: 5,
+                    skills: ["Figma", "Adobe XD", "User Research", "Wireframing", "Prototyping", "Accessibility"],
+                    achievements: "Designed an award-winning mobile app interface that increased user retention by 35%."
+                },
+                {
+                    id: 3,
+                    name: "BAHATI Justin",
+                    title: "Backend Engineer",
+                    photoUrl: "/api/placeholder/100/100", // Placeholder image
+                    summary: "Passionate about building scalable and efficient server-side solutions.",
+                    email: "michael.chen@example.com",
+                    linkedin: "https://linkedin.com/in/michaelchen",
+                    experience: 6,
+                    skills: ["Node.js", "Python", "MongoDB", "AWS", "Docker", "Microservices"],
+                    achievements: "Implemented a caching strategy that reduced API response times by 70%."
+                }
+            ];
+            
+            // Sample initial recognitions
+            const initialRecognitions = [
+                {
+                    id: 1,
+                    name: "Intwali Deo",
+                    recipient: "Intwali Deo",
+                    message: "Thank you for stepping up during the last release cycle. Your dedication to quality and attention to detail made all the difference in our successful launch!",
+                    color: 1,
+                    emoji: "🎉",
+                    likes: 12,
+                    timestamp: "2 days ago"
+                },
+                {
+                    id: 2,
+                    name: "Bahati Justin",
+                    recipient: "Developer Team",
+                    message: "I'm amazed at how quickly you resolved those critical bugs before the demo. Your expertise and teamwork truly saved the day!",
+                    color: 2,
+                    emoji: "🙌",
+                    likes: 8,
+                    timestamp: "3 days ago"
+                },
+                {
+                    id: 3,
+                    name: "Munyentwari Clement",
+                    recipient: "Bahati Justin",
+                    message: "Justin, your dedication to TG Project was outstanding! You addressed all their concerns with such clarity and confidence. You're a true asset to our team.",
+                    color: 3,
+                    emoji: "⭐",
+                    likes: 15,
+                    timestamp: "1 day ago"
+                },
+                {
+                    id: 4,
+                    name: "Sam Evrald",
+                    recipient: "Customer Support Team",
+                    message: "Your dedication to our customers is truly inspiring. The positive feedback we've been receiving is a direct result of your patience and problem-solving skills.",
+                    color: 4,
+                    emoji: "👏",
+                    likes: 7,
+                    timestamp: "4 days ago"
+                },
+                {
+                    id: 5,
+                    name: "Munyentwari Clement",
+                    recipient: "HR Department",
+                    message: "Thank you for organizing such a wonderful team-building event! It was refreshing and helped us all connect on a personal level.",
+                    color: 5,
+                    emoji: "❤️",
+                    likes: 10,
+                    timestamp: "2 days ago"
+                }
+            ];
+            
+            // Load data from local storage if available, otherwise use initial data
+            const storedTeamMembers = localStorage.getItem('teamMembers');
+            const storedRecognitions = localStorage.getItem('recognitions');
+            
+            // Load team members from storage or use initial data
+            if (storedTeamMembers) {
+                teamMembers = JSON.parse(storedTeamMembers);
+            } else {
+                teamMembers = [...initialTeamMembers];
+                // Save initial data to localStorage
+                localStorage.setItem('teamMembers', JSON.stringify(teamMembers));
+            }
+            
+            // Load recognitions from storage or use initial data
+            if (storedRecognitions) {
+                recognitions = JSON.parse(storedRecognitions);
+            } else {
+                recognitions = [...initialRecognitions];
+                // Save initial data to localStorage
+                localStorage.setItem('recognitions', JSON.stringify(recognitions));
+            }
+            
+            // Render initial team members
+            renderTeamProfiles();
+            
+            // Add initial kudos to the board
+            renderRecognitionBoard();
+            
+            // Handle profile image upload
+            const profileImageInput = document.getElementById('profile-image');
+            const imagePreview = document.getElementById('image-preview');
+            const cameraIcon = document.getElementById('camera-icon');
+            const uploadText = document.getElementById('upload-text');
+            let currentImageDataUrl = ''; // Store the current image data URL
+            
+            profileImageInput.addEventListener('change', function(e) {
+                if (this.files && this.files[0]) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        currentImageDataUrl = e.target.result; // Save the data URL
+                        imagePreview.src = currentImageDataUrl;
+                        imagePreview.style.display = 'block';
+                        cameraIcon.style.display = 'none';
+                        uploadText.style.display = 'none';
+                    };
+                    
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+            
+            // Handle skill addition
+            const skillsInput = document.getElementById('profile-skills-input');
+            const addSkillBtn = document.getElementById('add-skill-btn');
+            const skillsContainer = document.getElementById('skills-container');
+            
+            function addSkill() {
+                const skillText = skillsInput.value.trim();
+                if (skillText && !profileSkills.includes(skillText)) {
+                    profileSkills.push(skillText);
+                    renderSkillChips();
+                    skillsInput.value = '';
+                }
+            }
+            
+            addSkillBtn.addEventListener('click', addSkill);
+            
+            skillsInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    addSkill();
+                }
+            });
+            
+            function renderSkillChips() {
+                skillsContainer.innerHTML = '';
+                profileSkills.forEach((skill, index) => {
+                    const chip = document.createElement('div');
+                    chip.className = 'skill-chip';
+                    chip.innerHTML = `
+                        ${skill}
+                        <button class="remove-chip" data-index="${index}">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    skillsContainer.appendChild(chip);
+                });
+                
+                // Add event listeners to remove buttons
+                document.querySelectorAll('.remove-chip').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        profileSkills.splice(index, 1);
+                        renderSkillChips();
+                    });
+                });
+            }
+            
+            // Handle profile form submission
+            const profileForm = document.getElementById('profile-form');
+            
+            profileForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form values
+                const name = document.getElementById('profile-name').value;
+                const title = document.getElementById('profile-title').value;
+                const summary = document.getElementById('profile-summary').value;
+                const email = document.getElementById('profile-email').value;
+                const linkedin = document.getElementById('profile-linkedin').value;
+                const experience = document.getElementById('profile-experience').value;
+                const achievements = document.getElementById('profile-achievements').value;
+                
+                // Get photo URL (either from file upload or default)
+                let photoUrl = imagePreview.style.display === 'none' ? 
+                    "/api/placeholder/100/100" : currentImageDataUrl;
+                
+                // Create new team member object
+                const newTeamMember = {
+                    id: Date.now(), // Use timestamp as a simple unique ID
+                    name,
+                    title,
+                    photoUrl,
+                    summary,
+                    email,
+                    linkedin,
+                    experience,
+                    skills: [...profileSkills],
+                    achievements
+                };
+                
+                // Add to team members array
+                teamMembers.push(newTeamMember);
+                
+                // Save to local storage
+                localStorage.setItem('teamMembers', JSON.stringify(teamMembers));
+                
+                // Render updated team profiles
+                renderTeamProfiles();
+                
+                // Reset form
+                profileForm.reset();
+                profileSkills = [];
+                renderSkillChips();
+                imagePreview.style.display = 'none';
+                cameraIcon.style.display = 'block';
+                uploadText.style.display = 'block';
+                currentImageDataUrl = '';
+                
+                // Show success message
+                showToast('Profile Successfully Added', 'The team member profile has been added and is now visible in the Team Profiles section.', 'success');
+                
+                // Switch to profiles tab
+                const profilesTab = document.getElementById('profiles-tab');
+                bootstrap.Tab.getInstance(profilesTab).show();
+            });
+            
+            // Handle recognition form submission
+            const kudoForm = document.getElementById('kudo-form');
+            
+            kudoForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form values
+                const name = document.getElementById('name').value;
+                const recipient = document.getElementById('recipient').value;
+                const message = document.getElementById('message').value;
+                const colorOption = document.querySelector('.color-option.selected');
+                const color = colorOption ? colorOption.getAttribute('data-color') : 1;
+                
+                // Create new recognition object
+                const newRecognition = {
+                    id: Date.now(), // Use timestamp as a simple unique ID
+                    name,
+                    recipient,
+                    message,
+                    color,
+                    emoji: selectedEmoji,
+                    likes: 0,
+                    timestamp: "Just now"
+                };
+                
+                // Add to recognitions array
+                recognitions.unshift(newRecognition);
+                
+                // Save to local storage
+                localStorage.setItem('recognitions', JSON.stringify(recognitions));
+                
+                // Render updated recognition board
+                renderRecognitionBoard();
+                
+                // Reset form
+                kudoForm.reset();
+                selectedEmoji = '';
+                document.querySelector('.emoji-btn.active')?.classList.remove('active');
+                document.querySelector('.color-option.selected').classList.remove('selected');
+                document.querySelector('.color-option[data-color="1"]').classList.add('selected');
+                
+                // Show success message
+                showToast('Recognition Posted', 'Your recognition has been added to the board.', 'success');
+            });
+            
+            // Color selector functionality
+            const colorOptions = document.querySelectorAll('.color-option');
+            colorOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove selected class from all options
+                    colorOptions.forEach(opt => opt.classList.remove('selected'));
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+                });
+            });
+            
+            // Emoji selector functionality
+            const emojiButtons = document.querySelectorAll('.emoji-btn');
+            emojiButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Toggle selected class
+                    emojiButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    selectedEmoji = this.getAttribute('data-emoji');
+                });
+            });
+            
+            // Filter buttons functionality
+            const filterButtons = document.querySelectorAll('[data-filter]');
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(b => b.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    const filter = this.getAttribute('data-filter');
+                    filterRecognitions(filter);
+                });
+            });
+            
+            function filterRecognitions(filter) {
+                let filteredRecognitions = [...recognitions];
+                
+                if (filter === 'recent') {
+                    // Already sorted by most recent (first items are most recent)
+                } else if (filter === 'popular') {
+                    filteredRecognitions.sort((a, b) => b.likes - a.likes);
+                }
+                
+                renderRecognitionBoard(filteredRecognitions);
+            }
+            
+            // Handle search functionality
+            const searchInput = document.getElementById('profile-search');
+            
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase().trim();
+                
+                if (searchTerm === '') {
+                    renderTeamProfiles();
+                    return;
+                }
+                
+                const filteredMembers = teamMembers.filter(member => {
+                    return (
+                        member.name.toLowerCase().includes(searchTerm) ||
+                        member.title.toLowerCase().includes(searchTerm) ||
+                        member.skills.some(skill => skill.toLowerCase().includes(searchTerm))
+                    );
+                });
+                
+                renderTeamProfiles(filteredMembers);
+            });
+            
+            // Function to render team profiles
+            function renderTeamProfiles(members = teamMembers) {
+                const profilesContainer = document.getElementById('profiles-container');
+                profilesContainer.innerHTML = '';
+                
+                if (members.length === 0) {
+                    profilesContainer.innerHTML = `
+                        <div class="no-results">
+                            <i class="fas fa-user-slash"></i>
+                            <h4>No team members found</h4>
+                            <p>Try adjusting your search criteria or add new team members.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                members.forEach(member => {
+                    const profileCard = document.createElement('div');
+                    profileCard.className = 'profile-card';
+                    
+                    // Generate skills HTML
+                    const skillsHTML = member.skills.map(skill => 
+                        `<span class="profile-skill">${skill}</span>`
+                    ).join('');
+                    
+                    // Determine if we should show initials or photo
+                    let avatarContent = '';
+                    if (member.photoUrl && member.photoUrl !== "/api/placeholder/100/100") {
+                        avatarContent = `<img src="${member.photoUrl}" alt="${member.name}">`;
+                    } else {
+                        avatarContent = getInitials(member.name);
+                    }
+                    
+                    profileCard.innerHTML = `
+                        <div class="profile-header">
+                            <div class="profile-avatar">
+                                ${avatarContent}
+                            </div>
+                            <h3 class="profile-name">${member.name}</h3>
+                            <p class="profile-title">${member.title}</p>
+                            <div class="profile-icons">
+                                ${member.email ? `<a href="mailto:${member.email}" class="profile-icon"><i class="fas fa-envelope"></i></a>` : ''}
+                                ${member.linkedin ? `<a href="${member.linkedin}" target="_blank" class="profile-icon"><i class="fab fa-linkedin-in"></i></a>` : ''}
+                            </div>
+                        </div>
+                        <div class="profile-body">
+                            <div class="profile-section">
+                                <div class="profile-section-title">
+                                    <i class="fas fa-user"></i> About
+                                </div>
+                                <p>${member.summary}</p>
+                            </div>
+                            <div class="profile-section">
+                                <div class="profile-section-title">
+                                    <i class="fas fa-code-branch"></i> Skills
+                                </div>
+                                <div>${skillsHTML}</div>
+                            </div>
+                            <div class="profile-section">
+                                <div class="profile-section-title">
+                                    <i class="fas fa-trophy"></i> Achievements
+                                </div>
+                                <p>${member.achievements}</p>
+                            </div>
+                            <div class="profile-footer">
+                                <span><i class="fas fa-briefcase"></i> ${member.experience} years experience</span>
+                                <button class="btn btn-sm btn-outline-primary" onclick="recruitProfile(${member.id})">
+                                    <i class="fas fa-share-alt"></i> Share Profile
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    profilesContainer.appendChild(profileCard);
+                });
+            }
+            
+            // Function to render recognition board
+            function renderRecognitionBoard(recognitionsToShow = recognitions) {
+                const kudoContainer = document.getElementById('kudo-container');
+                kudoContainer.innerHTML = '';
+                
+                recognitionsToShow.forEach(kudo => {
+                    // Create kudo card
+                    const kudoCard = document.createElement('div');
+                    kudoCard.className = `kudo-card kudo-color-${kudo.color}`;
+                    
+                    // Look for matching team member to get their photo
+                    const matchingMember = teamMembers.find(member => 
+                        member.name.toLowerCase() === kudo.recipient.toLowerCase());
+                    
+                    // Create avatar content (photo or initials)
+                    let avatarContent = '';
+                    if (matchingMember && matchingMember.photoUrl) {
+                        avatarContent = `<img src="${matchingMember.photoUrl}" alt="${kudo.recipient}">`;
+                    } else {
+                        avatarContent = getInitials(kudo.recipient);
+                    }
+                    
+                    // Create card content
+                    kudoCard.innerHTML = `
+                        <div class="card-header">
+                            <div class="card-avatar">
+                                ${avatarContent}
+                            </div>
+                            <div>
+                                <h5 class="card-title">To: ${kudo.recipient}</h5>
+                                <div class="card-subtitle">From: ${kudo.name}</div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">${kudo.emoji ? kudo.emoji + ' ' : ''}${kudo.message}</p>
+                        </div>
+                        <div class="card-footer">
+                            <button class="reaction-btn like-btn" data-id="${kudo.id}">
+                                <i class="far fa-heart"></i>
+                                <span class="like-count">${kudo.likes}</span>
+                            </button>
+                            <span class="time-stamp">${kudo.timestamp}</span>
+                        </div>
+                    `;
+                    
+                    kudoContainer.appendChild(kudoCard);
+                });
+                
+                // Add like button functionality
+                document.querySelectorAll('.like-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const kudoId = parseInt(this.getAttribute('data-id'));
+                        const kudo = recognitions.find(r => r.id === kudoId);
+                        
+                        if (kudo) {
+                            kudo.likes++;
+                            this.querySelector('.like-count').textContent = kudo.likes;
+                            this.style.color = '#00a5cf';
+                            
+                            // Save updated recognitions to localStorage
+                            localStorage.setItem('recognitions', JSON.stringify(recognitions));
+                        }
+                    });
+                });
+            }
+            
+            // Helper function to get initials from name
+            function getInitials(name) {
+                return name.split(' ')
+                    .map(word => word.charAt(0))
+                    .join('')
+                    .toUpperCase();
+            }
+            
+            // Toast notification system
+            function showToast(title, message, type = 'info') {
+                const toastContainer = document.getElementById('toastContainer');
+                
+                const toast = document.createElement('div');
+                toast.className = `custom-toast toast-${type}`;
+                toast.innerHTML = `
+                    <div class="toast-indicator"></div>
+                    <div class="toast-header">
+                        <strong>${title}</strong>
+                        <button type="button" class="btn-close"></button>
+                    </div>
+                    <div class="toast-body">
+                        ${message}
+                    </div>
+                `;
+                
+                toastContainer.appendChild(toast);
+                
+                // Add event listener to close button
+                toast.querySelector('.btn-close').addEventListener('click', function() {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateX(50px)';
+                    setTimeout(() => {
+                        toast.remove();
+                    }, 300);
+                });
+                
+                // Show toast
+                setTimeout(() => {
+                    toast.classList.add('show');
+                }, 10);
+                
+                // Auto remove after 5 seconds
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.style.opacity = '0';
+                        toast.style.transform = 'translateX(50px)';
+                        setTimeout(() => {
+                            if (toast.parentNode) toast.remove();
+                        }, 300);
+                    }
+                }, 5000);
+            }
+            
+            // Copy link functionality
+            document.getElementById('copy-link').addEventListener('click', function() {
+                const linkInput = document.querySelector('.share-link');
+                linkInput.select();
+                document.execCommand('copy');
+                
+                showToast('Link Copied', 'The sharing link has been copied to your clipboard.', 'success');
+            });
+            
+            // Export to PDF with well-organized content and profile pictures
+            document.getElementById('export-pdf').addEventListener('click', function() {
+                createTeamProfilesPDF();
+            });
+            
+            // Create a comprehensive team PDF with profile pictures
+            async function createTeamProfilesPDF() {
+                showToast('PDF Export Started', 'Creating a complete PDF with profile pictures. Please wait...', 'success');
+                
+                try {
+                    // Create a hidden div to render the PDF content
+                    const pdfContainer = document.createElement('div');
+                    pdfContainer.style.width = '794px'; // A4 width in pixels at 96 DPI
+                    pdfContainer.style.position = 'absolute';
+                    pdfContainer.style.left = '-9999px';
+                    pdfContainer.style.backgroundColor = 'white';
+                    document.body.appendChild(pdfContainer);
+                    
+                    // Add cover page content
+                    const coverPage = document.createElement('div');
+                    coverPage.style.width = '100%';
+                    coverPage.style.height = '1123px'; // A4 height in pixels
+                    coverPage.style.padding = '40px';
+                    coverPage.style.boxSizing = 'border-box';
+                    coverPage.style.position = 'relative';
+                    
+                    // Cover page header
+                    coverPage.innerHTML = `
+                        <div style="background-color: #00a5cf; color: white; padding: 30px; text-align: center; margin-bottom: 40px;">
+                            <h1 style="font-size: 36px; margin: 0 0 10px 0;">TEAM PROFILES</h1>
+                            <p style="font-size: 18px; margin: 0;">Talent Showcase for Recruiters</p>
+                        </div>
+                        
+                        <div style="text-align: center; margin-bottom: 50px;">
+                            <p style="font-size: 16px; color: #555;">Featuring ${teamMembers.length} talented professionals</p>
+                            <p style="font-size: 14px; color: #777;">Generated on ${new Date().toLocaleDateString()}</p>
+                        </div>
+                        
+                        <div id="cover-profiles" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px;"></div>
+                        
+                        <div style="position: absolute; bottom: 40px; left: 40px; right: 40px; text-align: center; border-top: 1px solid #ddd; padding-top: 20px;">
+                            <p style="font-size: 14px; color: #777;">TeamShowcase - Comprehensive Talent Directory</p>
+                        </div>
+                    `;
+                    
+                    // Add team member previews to cover page
+                    const coverProfiles = coverPage.querySelector('#cover-profiles');
+                    const maxPreview = Math.min(teamMembers.length, 6);
+                    
+                    for (let i = 0; i < maxPreview; i++) {
+                        const member = teamMembers[i];
+                        const previewCard = document.createElement('div');
+                        previewCard.style.width = '200px';
+                        previewCard.style.textAlign = 'center';
+                        
+                        // Determine avatar content
+                        let avatarContent = '';
+                        if (member.photoUrl && member.photoUrl !== "/api/placeholder/100/100") {
+                            avatarContent = `<img src="${member.photoUrl}" alt="${member.name}" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #00a5cf;">`;
+                        } else {
+                            avatarContent = `
+                                <div style="width: 100px; height: 100px; border-radius: 50%; background-color: #e9ecef; display: flex; align-items: center; justify-content: center; margin: 0 auto; border: 3px solid #00a5cf; font-size: 36px; color: #00a5cf; font-weight: bold;">
+                                    ${getInitials(member.name)}
+                                </div>
+                            `;
+                        }
+                        
+                        previewCard.innerHTML = `
+                            ${avatarContent}
+                            <h3 style="margin: 10px 0 5px 0; font-size: 16px;">${member.name}</h3>
+                            <p style="margin: 0; font-size: 14px; color: #666;">${member.title}</p>
+                        `;
+                        
+                        coverProfiles.appendChild(previewCard);
+                    }
+                    
+                    pdfContainer.appendChild(coverPage);
+                    
+                    // Add individual profile pages
+                    for (const member of teamMembers) {
+                        const profilePage = document.createElement('div');
+                        profilePage.style.width = '100%';
+                        profilePage.style.height = '1123px'; // A4 height in pixels
+                        profilePage.style.padding = '40px';
+                        profilePage.style.boxSizing = 'border-box';
+                        profilePage.style.position = 'relative';
+                        profilePage.className = 'profile-page';
+                        
+                        // Determine avatar content
+                        let avatarContent = '';
+                        if (member.photoUrl && member.photoUrl !== "/api/placeholder/100/100") {
+                            avatarContent = `<img src="${member.photoUrl}" alt="${member.name}" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid white;">`;
+                        } else {
+                            avatarContent = `
+                                <div style="width: 120px; height: 120px; border-radius: 50%; background-color: rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; border: 3px solid white; font-size: 40px; color: white; font-weight: bold;">
+                                    ${getInitials(member.name)}
+                                </div>
+                            `;
+                        }
+                        
+                        // Create the header with profile picture
+                        const headerHTML = `
+                            <div style="background-color: #00a5cf; color: white; padding: 30px; display: flex; align-items: center; margin-bottom: 30px;">
+                                <div style="margin-right: 20px;">
+                                    ${avatarContent}
+                                </div>
+                                <div>
+                                    <h1 style="font-size: 24px; margin: 0 0 5px 0;">${member.name}</h1>
+                                    <p style="font-size: 18px; margin: 0; opacity: 0.9;">${member.title}</p>
+                                    <p style="font-size: 14px; margin: 10px 0 0 0; opacity: 0.8;">${member.experience} years of experience</p>
+                                </div>
+                            </div>
+                        `;
+                        
+                        // Create section style function
+                        const createSection = (title, content) => `
+                            <div style="margin-bottom: 25px;">
+                                <h2 style="color: #00a5cf; font-size: 18px; margin: 0 0 10px 0; border-bottom: 2px solid #00a5cf; padding-bottom: 5px;">${title}</h2>
+                                <div style="font-size: 14px; color: #333; line-height: 1.5;">
+                                    ${content}
+                                </div>
+                            </div>
+                        `;
+                        
+                        // Create skills section
+                        const skillsHTML = member.skills.map(skill => 
+                            `<span style="display: inline-block; background-color: #e9f7fb; color: #00a5cf; padding: 5px 12px; border-radius: 20px; margin-right: 8px; margin-bottom: 8px; font-size: 13px;">${skill}</span>`
+                        ).join('');
+                        
+                        // Contact info section
+                        let contactHTML = '';
+                        if (member.email) {
+                            contactHTML += `<p style="margin: 5px 0;"><strong>Email:</strong> ${member.email}</p>`;
+                        }
+                        if (member.linkedin) {
+                            contactHTML += `<p style="margin: 5px 0;"><strong>LinkedIn:</strong> ${member.linkedin}</p>`;
+                        }
+                        
+                        // Assemble the profile page
+                        profilePage.innerHTML = `
+                            ${headerHTML}
+                            
+                            ${createSection('Professional Summary', `<p>${member.summary}</p>`)}
+                            
+                            ${createSection('Skills & Expertise', `<div style="display: flex; flex-wrap: wrap;">${skillsHTML}</div>`)}
+                            
+                            ${createSection('Key Achievements', `<p>${member.achievements}</p>`)}
+                            
+                            ${createSection('Contact Information', contactHTML)}
+                            
+                            <div style="position: absolute; bottom: 40px; left: 40px; right: 40px; display: flex; justify-content: space-between; border-top: 1px solid #ddd; padding-top: 15px; color: #999; font-size: 12px;">
+                                <span>TeamShowcase - Profile Directory</span>
+                                <span>${member.name} - ${member.title}</span>
+                            </div>
+                        `;
+                        
+                        pdfContainer.appendChild(profilePage);
+                    }
+                    
+                    // Generate PDF from the content
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF('p', 'pt', 'a4');
+                    
+                    // Set up page properties
+                    const pageWidth = doc.internal.pageSize.getWidth();
+                    const pageHeight = doc.internal.pageSize.getHeight();
+                    
+                    // Process each page (cover + profiles)
+                    const pages = pdfContainer.querySelectorAll('div[style*="height: 1123px"]');
+                    
+                    for (let i = 0; i < pages.length; i++) {
+                        if (i > 0) {
+                            doc.addPage();
+                        }
+                        
+                        // Convert the page to canvas
+                        const canvas = await html2canvas(pages[i], {
+                            scale: 2, // Higher resolution
+                            useCORS: true, // Allow loading of cross-origin images
+                            logging: false,
+                            windowWidth: 794,
+                            windowHeight: 1123
+                        });
+                        
+                        // Add the canvas as an image to the PDF
+                        const imgData = canvas.toDataURL('image/jpeg', 0.95);
+                        doc.addImage(imgData, 'JPEG', 0, 0, pageWidth, pageHeight);
+                    }
+                    
+                    // Save the PDF
+                    doc.save('team-profiles-complete.pdf');
+                    showToast('PDF Ready', 'Your team profiles PDF with photos has been generated and downloaded.', 'success');
+                    
+                } catch (error) {
+                    console.error('Error generating PDF:', error);
+                    showToast('PDF Generation Error', 'There was an error generating the PDF. Please try again.', 'error');
+                    
+                    // Fallback to a simpler PDF
+                    generateSimplePDF();
+                } finally {
+                    // Clean up
+                    const container = document.querySelector('div[style*="left: -9999px"]');
+                    if (container) {
+                        document.body.removeChild(container);
+                    }
+                }
+            }
+            
+            // Fallback simple PDF generator
+            function generateSimplePDF() {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF('p', 'mm', 'a4');
+                
+                // Set initial position
+                let yPos = 20;
+                
+                // Add title
+                doc.setFontSize(20);
+                doc.setTextColor(0, 165, 207);
+                doc.text('Team Profiles', 105, yPos, { align: 'center' });
+                yPos += 15;
+                
+                // Add date
+                doc.setFontSize(12);
+                doc.setTextColor(100, 100, 100);
+                doc.text(`Generated on ${new Date().toLocaleDateString()}`, 105, yPos, { align: 'center' });
+                yPos += 20;
+                
+                // For each team member
+                for (const member of teamMembers) {
+                    // Add a new page if needed
+                    if (yPos > 250) {
+                        doc.addPage();
+                        yPos = 20;
+                    }
+                    
+                    // Add name
+                    doc.setFontSize(16);
+                    doc.setTextColor(0, 165, 207);
+                    doc.text(member.name, 20, yPos);
+                    yPos += 8;
+                    
+                    // Add title
+                    doc.setFontSize(12);
+                    doc.setTextColor(80, 80, 80);
+                    doc.text(member.title, 20, yPos);
+                    yPos += 15;
+                    
+                    // Add summary
+                    doc.setFontSize(10);
+                    doc.setTextColor(60, 60, 60);
+                    const summaryLines = doc.splitTextToSize(member.summary, 170);
+                    doc.text(summaryLines, 20, yPos);
+                    yPos += (summaryLines.length * 5) + 10;
+                    
+                    // Add skills
+                    doc.setFontSize(10);
+                    doc.setTextColor(60, 60, 60);
+                    doc.text(`Skills: ${member.skills.join(', ')}`, 20, yPos);
+                    yPos += 15;
+                    
+                    // Add divider
+                    doc.setDrawColor(200, 200, 200);
+                    doc.line(20, yPos, 190, yPos);
+                    yPos += 15;
+                }
+                
+                // Save the PDF
+                doc.save('team-profiles-simple.pdf');
+            }
+            
+            // Function to generate PDF content for team profiles
+            async function generateTeamProfilesPDF(doc, members, startY, margin, width) {
+                let yPos = startY;
+                
+                for (let i = 0; i < members.length; i++) {
+                    const member = members[i];
+                    
+                    // Check if need to add a new page
+                    if (yPos > 250) {
+                        doc.addPage();
+                        yPos = 20;
+                    }
+                    
+                    // Add member name
+                    doc.setFontSize(16);
+                    doc.setTextColor(0, 0, 0);
+                    doc.text(member.name, margin, yPos);
+                    yPos += 7;
+                    
+                    // Add title
+                    doc.setFontSize(12);
+                    doc.setTextColor(100, 100, 100);
+                    doc.text(member.title, margin, yPos);
+                    yPos += 10;
+                    
+                    // Add summary
+                    doc.setFontSize(10);
+                    doc.setTextColor(50, 50, 50);
+                    
+                    // Split long text to fit page width
+                    const summaryLines = doc.splitTextToSize(member.summary, width);
+                    doc.text(summaryLines, margin, yPos);
+                    yPos += (summaryLines.length * 5) + 5;
+                    
+                    // Add skills section
+                    doc.setFontSize(11);
+                    doc.setTextColor(0, 0, 0);
+                    doc.text('Skills:', margin, yPos);
+                    yPos += 5;
+                    
+                    // Skills as a comma-separated list
+                    doc.setFontSize(10);
+                    doc.setTextColor(80, 80, 80);
+                    const skillsText = member.skills.join(', ');
+                    const skillsLines = doc.splitTextToSize(skillsText, width);
+                    doc.text(skillsLines, margin, yPos);
+                    yPos += (skillsLines.length * 5) + 5;
+                    
+                    // Add achievements section
+                    doc.setFontSize(11);
+                    doc.setTextColor(0, 0, 0);
+                    doc.text('Achievements:', margin, yPos);
+                    yPos += 5;
+                    
+                    doc.setFontSize(10);
+                    doc.setTextColor(80, 80, 80);
+                    const achievementsLines = doc.splitTextToSize(member.achievements, width);
+                    doc.text(achievementsLines, margin, yPos);
+                    yPos += (achievementsLines.length * 5) + 5;
+                    
+                    // Add experience
+                    doc.setFontSize(10);
+                    doc.text(`Years of Experience: ${member.experience}`, margin, yPos);
+                    yPos += 5;
+                    
+                    // Add contact info if available
+                    if (member.email) {
+                        doc.text(`Email: ${member.email}`, margin, yPos);
+                        yPos += 5;
+                    }
+                    
+                    if (member.linkedin) {
+                        doc.text(`LinkedIn: ${member.linkedin}`, margin, yPos);
+                        yPos += 5;
+                    }
+                    
+                    // Add a divider except for the last item
+                    if (i < members.length - 1) {
+                        yPos += 5;
+                        doc.setDrawColor(200, 200, 200);
+                        doc.line(margin, yPos, pageWidth - margin, yPos);
+                        yPos += 10;
+                    }
+                }
+                
+                return Promise.resolve();
+            }
+            
+            // Share to LinkedIn functionality
+            document.getElementById('share-linkedin').addEventListener('click', function() {
+                const shareUrl = document.querySelector('.share-link').value;
+                const shareTitle = 'Check out our amazing team profiles!';
+                const shareText = 'I wanted to share our talented team with you.';
+                
+                // In a real app, this would open a LinkedIn sharing dialog
+                window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`, '_blank');
+            });
+            
+            // Share via email functionality
+            document.getElementById('share-email').addEventListener('click', function() {
+                const shareUrl = document.querySelector('.share-link').value;
+                const subject = 'Check out our team profiles';
+                const body = `I wanted to share our talented team with you. Check it out here: ${shareUrl}`;
+                
+                window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            });
+            
+            // Add to global scope for button access
+            window.recruitProfile = function(profileId) {
+                const member = teamMembers.find(m => m.id === profileId);
+                if (member) {
+                    showToast('Profile Shared', `${member.name}'s profile has been shared with the recruiter.`, 'success');
+                }
+            };
+            
+            // Add a version check to handle potential localStorage schema changes
+            function checkStorageVersion() {
+                const currentVersion = '1.0'; // Update this when making breaking changes to data structure
+                const storedVersion = localStorage.getItem('dataVersion');
+                
+                if (storedVersion !== currentVersion) {
+                    // If versions don't match, reset data to prevent issues
+                    teamMembers = [...initialTeamMembers];
+                    recognitions = [...initialRecognitions];
+                    localStorage.setItem('teamMembers', JSON.stringify(teamMembers));
+                    localStorage.setItem('recognitions', JSON.stringify(recognitions));
+                    localStorage.setItem('dataVersion', currentVersion);
+                }
+            }
+            
+            // Check storage version on load
+            checkStorageVersion();
+        });
+    </script>
+    <footer class="text-center bg-body-tertiary">
+  <!-- Grid container -->
+  <div class="container pt-4">
+    <!-- Section: Social media -->
+    <section class="mb-4">
+      <!-- Facebook -->
+      <a
+        data-mdb-ripple-init
+        class="btn btn-link btn-floating btn-lg text-body m-1"
+        href="#!"
+        role="button"
+        data-mdb-ripple-color="dark"
+        ><i class="fab fa-facebook-f"></i
+      ></a>
+
+      <!-- Twitter -->
+      <a
+        data-mdb-ripple-init
+        class="btn btn-link btn-floating btn-lg text-body m-1"
+        href="#!"
+        role="button"
+        data-mdb-ripple-color="dark"
+        ><i class="fab fa-twitter"></i
+      ></a>
+
+      <!-- Google -->
+      <a
+        data-mdb-ripple-init
+        class="btn btn-link btn-floating btn-lg text-body m-1"
+        href="#!"
+        role="button"
+        data-mdb-ripple-color="dark"
+        ><i class="fab fa-google"></i
+      ></a>
+
+      <!-- Instagram -->
+      <a
+        data-mdb-ripple-init
+        class="btn btn-link btn-floating btn-lg text-body m-1"
+        href="#!"
+        role="button"
+        data-mdb-ripple-color="dark"
+        ><i class="fab fa-instagram"></i
+      ></a>
+
+      <!-- Linkedin -->
+      <a
+        data-mdb-ripple-init
+        class="btn btn-link btn-floating btn-lg text-body m-1"
+        href="#!"
+        role="button"
+        data-mdb-ripple-color="dark"
+        ><i class="fab fa-linkedin"></i
+      ></a>
+      <!-- Github -->
+      <a
+        data-mdb-ripple-init
+        class="btn btn-link btn-floating btn-lg text-body m-1"
+        href="#!"
+        role="button"
+        data-mdb-ripple-color="dark"
+        ><i class="fab fa-github"></i
+      ></a>
+    </section>
+    <!-- Section: Social media -->
+  </div>
+  <!-- Grid container -->
+
+  <!-- Copyright -->
+  <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+    © 2025 Copyright:
+    <a class="text-body" href="https://ikigugugroup.rw">Designed with ❤️ by TG ICT Team</a>
+  </div>
+  <!-- Copyright -->
+</footer>
+</body>
+</html>
